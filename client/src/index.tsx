@@ -1,23 +1,16 @@
 import ReactDOM from 'react-dom/client';
 import App from './App';
-import Store from './store/store';
-import { createContext } from 'react';
+import { setupStore } from './store/store';
+import { Provider } from 'react-redux';
 
-interface StoreInterface {
-  store: Store;
-}
-
-const store = new Store();
-
-export const Context = createContext<StoreInterface>({
-  store,
-});
+const store = setupStore()
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
 root.render(
-  <Context.Provider value={{ store }}>
+  <Provider store={store}>
     <App />
-  </Context.Provider>
+  </Provider>
 );

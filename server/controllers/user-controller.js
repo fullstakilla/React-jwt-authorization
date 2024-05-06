@@ -59,6 +59,7 @@ class UserController {
 
             return res.json(userData);
         } catch (e) {
+            console.log('ошибцан')
             next(e);
         }
     }

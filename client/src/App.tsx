@@ -1,19 +1,20 @@
-import { FC, useContext, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import LoginForm from "./components/LoginForm";
-import { Context } from ".";
-import { observer } from "mobx-react";
 import { IUser } from "./models/IUser";
+import { useAppDispatch, useAppSelector } from "./hooks/redux-hooks";
+import { checkAuth, logout } from "./store/slices/userSlice";
 import UserService from "./services/UserService";
 
 const App: FC = () => {
-  const {store} = useContext(Context);
+  const dispatch = useAppDispatch();
   const [users, setUsers] = useState<IUser[]>([])
+  const user = useAppSelector(state => state.userReducer);
 
   useEffect(() => {
     if (localStorage.getItem('token')) {
-      store.checkAuth();
+      dispatch(checkAuth())
     }
-  }, [store])
+  }, [dispatch])
 
   async function getUsers() {
     try {
@@ -24,11 +25,17 @@ const App: FC = () => {
     }
   }
 
-  if (store.isLoading) {
-    return <div>Загрузка</div>
+  if (user.isLoading) {
+    return (
+      <>
+        <div>Загрузка</div>
+        <button onClick={() => dispatch(logout())}>Выйти</button>
+      </>
+    )
+    
   }
 
-  if (!store.isAuth) {
+  if (!user.isAuth) {
     return (
       <div>
         <LoginForm />
@@ -39,9 +46,9 @@ const App: FC = () => {
 
   return (
       <div>
-        <h1>{store.isAuth ? `Пользователь авторизован под ${store.user.email}` : `АВТОРИЗУЙТЕСЬ`}</h1>
-        <h1>{store.user.isActivated ? `Аккаунт подтвержден по почте ${store.user.email}` : `Подтвердите аккаунт`}</h1>
-        <button onClick={() => store.logout()}>Выйти</button>
+        <h1>{user.isAuth ? `Пользователь авторизован под ${user.user?.email}` : `АВТОРИЗУЙТЕСЬ`}</h1>
+        <h1>{user.user?.isActivated ? `Аккаунт подтвержден по почте ${user.user.email}` : `Подтвердите аккаунт`}</h1>
+        <button onClick={() => dispatch(logout())}>Выйти</button>
         <div>
           <button onClick={getUsers}>Получить пользователей</button>
         </div>
@@ -52,4 +59,4 @@ const App: FC = () => {
   );
 }
 
-export default observer(App);
+export default App;

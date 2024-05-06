@@ -1,11 +1,11 @@
-import { FC, useContext, useState } from "react";
-import { Context } from "..";
-import { observer } from "mobx-react-lite";
+import { FC, useState } from "react";
+import { useAppDispatch } from "../hooks/redux-hooks";
+import { login, registration } from "../store/slices/userSlice";
 
  const LoginForm: FC = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const {store} = useContext(Context);
+    const dispatch = useAppDispatch();
     return (
         <div>
             <input
@@ -20,14 +20,14 @@ import { observer } from "mobx-react-lite";
                 onChange={e => setPassword(e.target.value)}
                 value={password}
             />
-            <button onClick={() => store.login(email, password)}>
+            <button onClick={() => dispatch(login({email, password}))}>
                 Логин
             </button>
-            <button onClick={() => store.registration(email, password)}>
+            <button onClick={() => dispatch(registration({email, password}))}>
                 Регистрация
             </button>
         </div>
     );
 }
  
-export default observer(LoginForm);
+export default LoginForm;
