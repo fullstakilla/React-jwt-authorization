@@ -1,4 +1,4 @@
-# Advanced JWT Authentication with Email Confirmation (React + MobX)
+# Advanced JWT Authentication with Email Confirmation (React + Redux Toolkit)
 
 Read below to find out how to implement this authorization in your app.
 
@@ -9,7 +9,7 @@ Read below to find out how to implement this authorization in your app.
 
 ## Tech Stack and Libraries
 
-- **Frontend**: React, MobX, MobX-react, Axios
+- **Frontend**: React, Redux Toolkit, Axios
 - **Backend**: Express, Express-validator, Nodemailer, Jsonwebtoken, Cors, Cookie-parser, Bcrypt, Uuid, Dotenv
 - **Database**: Mongodb, Mongoose
 
